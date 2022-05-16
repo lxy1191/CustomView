@@ -30,7 +30,7 @@ public class TempScrollView extends TextView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         screenWidth = MeasureSpec.getSize(widthMeasureSpec);
         Paint.FontMetrics metrics = getPaint().getFontMetrics();
-        singleLineHeight = (int) Math.abs(metrics.descent - metrics.ascent);
+        singleLineHeight = (int) Math.abs(metrics.descent - metrics.ascent)+1;
 
         if (orientation == LinearLayout.HORIZONTAL) {
             int textWidth = (int) getPaint().measureText(getText().toString());

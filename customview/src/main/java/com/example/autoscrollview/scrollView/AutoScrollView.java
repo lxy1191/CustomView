@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.example.autoscrollview.R;
+import com.example.customview.R;
 
 import java.util.List;
 
@@ -70,14 +70,13 @@ public class AutoScrollView extends LinearLayout {
             set.setDuration(duration);
             set.start();
         }else{
-            int lineHeight=tempView.getSingleLineHeight()*showLine;
-            ObjectAnimator transYAnim = ObjectAnimator.ofFloat(tempView, "translationY", lineHeight, -tempView.getHeight());
+            ObjectAnimator transYAnim = ObjectAnimator.ofFloat(tempView, "translationY", (getHeight()+tempView.getHeight())/2,-(tempView.getHeight()+getHeight())/2);
             transYAnim.setRepeatCount(Animation.INFINITE);
             AnimatorSet set = new AnimatorSet();
             set.playSequentially(transYAnim);
             set.setInterpolator(new LinearInterpolator()); //设置速率
             if (duration == 0)
-                duration = 1000*((int)Math.ceil(tempView.getHeight()*1.0/lineHeight));
+                duration = 1000*((int)Math.ceil(tempView.getHeight()*1.0/tempView.getSingleLineHeight()));
             set.setDuration(duration);
             set.start();
         }
