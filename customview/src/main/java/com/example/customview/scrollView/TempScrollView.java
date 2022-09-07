@@ -1,4 +1,4 @@
-package com.example.autoscrollview.scrollView;
+package com.example.customview.scrollView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

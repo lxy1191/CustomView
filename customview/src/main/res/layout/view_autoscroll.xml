@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.autoscrollview.scrollView.TempScrollView
+    <com.example.customview.scrollView.TempScrollView
         android:id="@+id/tempScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

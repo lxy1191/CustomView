@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ASMIdeaPluginConfiguration">
+    <asm skipDebug="false" skipFrames="false" skipCode="false" expandFrames="false" />
+    <groovy codeStyle="LEGACY" />
+  </component>
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Project/AndroidProject/MyGit/CustomView/autoscrollview/src/main/res/drawable/ic_launcher_background.xml" value="0.138" />
         <entry key="..\:/Project/AndroidProject/MyGit/CustomView/autoscrollview/src/main/res/layout/view_autoscroll.xml" value="0.22239583333333332" />
+        <entry key="..\:/Project/AndroidProject/MyGit/CustomView/customview/src/main/res/layout/add_subtract_view.xml" value="0.23697916666666666" />
         <entry key="..\:/Project/AndroidProject/MyGit/CustomView/customview/src/main/res/layout/view_autoscroll.xml" value="0.23697916666666666" />
       </map>
     </option>

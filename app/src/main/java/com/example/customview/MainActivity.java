@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.autoscrollview.scrollView.AutoScrollView;
+import com.example.customview.scrollView.AutoScrollView;
 
 import java.util.ArrayList;
 

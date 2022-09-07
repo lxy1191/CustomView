@@ -1,4 +1,4 @@
-package com.example.autoscrollview.scrollView;
+package com.example.customview.scrollView;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

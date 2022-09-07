@@ -8,4 +8,9 @@
         <attr name="android:textColor"/>
         <attr name="android:text"/>
     </declare-styleable>
+
+    <declare-styleable name="AddSubtractView">
+        <attr name="symbolSize" format="dimension"/>
+        <attr name="contentSize" format="dimension"/>
+    </declare-styleable>
 </resources>
