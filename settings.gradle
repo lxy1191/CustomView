@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "CustomView"
-include ':app'
+//include ':app'
 include ':customview'
