@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"/>
 
     <com.example.customview.addsubtractView.AddSubtractView
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"/>
 
 

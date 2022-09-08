@@ -3,6 +3,7 @@ package com.example.customview.addsubtractView;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.example.customview.R;
 import com.example.customview.utils.SizeUtil;
@@ -24,19 +26,27 @@ public class AddSubtractView extends LinearLayout {
     private final EditText mEtNum;
     private final TextView mTvAdd;
     private final View view;
+    private final LinearLayout mLayout;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public AddSubtractView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        view = LayoutInflater.from(context).inflate(R.layout.add_subtract_view,this,true);
+        view = LayoutInflater.from(context).inflate(R.layout.view_add_subtract,this,true);
         mTvSubtract = view.findViewById(R.id.tv_subtract);
         mEtNum = view.findViewById(R.id.et_num);
         mTvAdd = view.findViewById(R.id.tv_add);
+        mLayout=view.findViewById(R.id.layout);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AddSubtractView);
         //获取title_text属性
         float symbolSize =  SizeUtil.sp2px(typedArray.getDimensionPixelSize(R.styleable.AddSubtractView_symbolSize,10));
         float contentSize =  SizeUtil.dip2px(typedArray.getDimensionPixelSize(R.styleable.AddSubtractView_contentSize,8));
+
+        if(getBackground()!=null){
+            mLayout.setBackground(getBackground());
+        }
+
         mTvSubtract.setTextSize(symbolSize);
         mTvAdd.setTextSize(symbolSize);
         mEtNum.setTextSize(contentSize);
@@ -45,6 +55,7 @@ public class AddSubtractView extends LinearLayout {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     private void listener(){
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             Rect rect=new Rect();
@@ -53,7 +64,7 @@ public class AddSubtractView extends LinearLayout {
             public void onGlobalLayout() {
                 view.getWindowVisibleDisplayFrame(rect);
                 int newHeight=rect.height();
-                if(newHeight>=oldHeight){ //未弹出软键盘
+                if(newHeight>oldHeight){ //未弹出软键盘
                     if(mEtNum.getText().toString().isEmpty()) mEtNum.setText("1");
                     mEtNum.clearFocus();
                 }

@@ -4,4 +4,5 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="c_585858">#585858</color>
     <color name="c_333333">#333333</color>
+    <color name="c_cccccc">#CCCCCC</color>
 </resources>
