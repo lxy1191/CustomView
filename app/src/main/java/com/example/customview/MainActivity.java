@@ -1,10 +1,13 @@
 package com.example.customview;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.customview.addsubtractView.AddSubtractView;
+import com.example.customview.addsubtractView.NumListener;
 import com.example.customview.scrollView.AutoScrollView;
 
 import java.util.ArrayList;
@@ -30,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
 //        tv.setText(str);
 //        asv.setText(str);
         asv.setTextList(list);
+
+        AddSubtractView view=findViewById(R.id.numView);
+        view.setMinNum(-10);
+        view.setNumListener(new NumListener() {
+            @Override
+            public void setNumListener(int num) {
+                Log.e("qqq",num+"");
+            }
+        });
 
 
     }
