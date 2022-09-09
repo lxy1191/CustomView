@@ -1,6 +1,6 @@
 package com.example.customview.utils;
 
-public class NumUtils {
+public class NumUtil {
     public static Integer parseInt(String s){
         if(s==null || s.isEmpty()) return null;
         if(s.contains("-")){

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Build;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,15 +14,19 @@ import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.customview.R;
-import com.example.customview.utils.NumUtils;
+import com.example.customview.utils.NumUtil;
 import com.example.customview.utils.SizeUtil;
 
 public class AddSubtractView extends LinearLayout {
     private volatile int minNum=1;
+    private volatile int maxNum=999;
+    private volatile boolean isShowTip=true;
+
     private int num=minNum;
     private final TextView mTvSubtract;
     private final EditText mEtNum;
@@ -29,9 +34,12 @@ public class AddSubtractView extends LinearLayout {
     private final View view;
     private final LinearLayout mLayout;
     private NumListener numListener;
+    private Context context;
 
     public AddSubtractView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+        this.context=context;
 
         view = LayoutInflater.from(context).inflate(R.layout.view_add_subtract,this,true);
         mTvSubtract = view.findViewById(R.id.tv_subtract);
@@ -60,13 +68,13 @@ public class AddSubtractView extends LinearLayout {
 
     private void listener(){
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            Rect rect=new Rect();
+            final Rect rect=new Rect();
             int oldHeight=0;
             @Override
             public void onGlobalLayout() {
                 view.getWindowVisibleDisplayFrame(rect);
                 int newHeight=rect.height();
-                if(newHeight>oldHeight){ //未弹出软键盘
+                if(oldHeight<newHeight){ //未弹出软键盘
                     if(mEtNum.getText().toString().isEmpty())  setNum(minNum);
                     mEtNum.clearFocus();
 
@@ -90,47 +98,85 @@ public class AddSubtractView extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 String content=s.toString();
-                if(content.isEmpty() || content.equals("-")) return;
+                if(content.isEmpty() || content.equals("-") || content.equals("+")) return;
 
-                if(NumUtils.parseInt(content)<=minNum){
-                    unSubtract();
+                int num=NumUtil.parseInt(content);
+                if(num<=minNum){
+                    if(num<minNum) {
+                        setNum(minNum);
+                        if(isShowTip){
+                            Toast.makeText(context, "已达下限", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    setClickable(mTvSubtract,false);
+                    moveFocusToEnd();
+                }else if(num>=maxNum){
+                    if(num>maxNum) {
+                        setNum(maxNum);
+                        if(isShowTip){
+                            Toast.makeText(context, "已达上限", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    setClickable(mTvAdd,false);
+                    moveFocusToEnd();
                 }else{
-                    subtract();
+                    setClickable(mTvSubtract,true);
+                    setClickable(mTvAdd,true);
                 }
-                
-                if(numListener!=null) numListener.setNumListener(NumUtils.parseInt(content));
+                if(numListener!=null) numListener.setNumListener(NumUtil.parseInt(mEtNum.getText().toString()));
             }
         });
 
         mTvSubtract.setOnClickListener(v -> {
             if(num<=minNum) {
-                unSubtract();
+                setClickable(mTvSubtract,false);
             }else {
-                num=NumUtils.parseInt(mEtNum.getText().toString())-1;
+                num= NumUtil.parseInt(mEtNum.getText().toString())-1;
                 setNum(num);
             }
-            movePointToLast();
+
+            cleanFocus();
         });
 
         mTvAdd.setOnClickListener(v -> {
-            num=NumUtils.parseInt(mEtNum.getText().toString())+1;
-            setNum(num);
-            movePointToLast();
+            if(num>=maxNum) {
+                setClickable(mTvAdd,false);
+            }else {
+                num= NumUtil.parseInt(mEtNum.getText().toString())+1;
+                setNum(num);
+            }
+
+            cleanFocus();
         });
     }
 
-    private void unSubtract(){
-        mTvSubtract.setTextColor(getResources().getColor(R.color.c_979797));
-        mTvSubtract.setClickable(false);
+    private void setClickable(TextView tv,boolean clickable){
+        if(clickable){
+            tv.setTextColor(getResources().getColor(R.color.c_585858));
+        }else{
+            tv.setTextColor(getResources().getColor(R.color.c_979797));
+        }
+        tv.setClickable(clickable);
     }
 
-    private void subtract(){
-        mTvSubtract.setTextColor(getResources().getColor(R.color.c_585858));
-        mTvSubtract.setClickable(true);
+    private void cleanFocus(){
+        if(mEtNum.hasFocus()){
+            mEtNum.clearFocus();
+        }
     }
+
+    private void moveFocusToEnd(){
+        try{
+            mEtNum.requestFocus();
+            mEtNum.setSelection(mEtNum.getText().toString().length());
+        }catch (Exception e){
+            mEtNum.setSelection(0);
+        }
+    }
+
 
     public int getNum(){
-        return NumUtils.parseInt(mEtNum.getText().toString());
+        return NumUtil.parseInt(mEtNum.getText().toString());
     }
 
     public void setNumListener(NumListener numListener){
@@ -139,17 +185,23 @@ public class AddSubtractView extends LinearLayout {
 
     public void setMinNum(int minNum){
         this.minNum=minNum;
+        if(minNum>=0){
+            mEtNum.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }else{
+            mEtNum.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+        }
+    }
+
+    public void setMaxNum(int maxNum){
+        this.maxNum=maxNum;
     }
 
     public void setNum(int num){
         mEtNum.setText(num+"");
     }
 
-    private void movePointToLast(){
-        if(mEtNum.hasFocus()){
-            mEtNum.requestFocus(); //请求焦点
-            mEtNum.setSelection(mEtNum.getText().toString().length());//移动光标至指定位置
-        }
+    public void showTip(boolean isShowTip){
+        this.isShowTip=isShowTip;
     }
 
 

@@ -23,7 +23,6 @@
         android:paddingRight="8dp"
         android:background="@color/transparent"
         android:singleLine="true"
-        android:inputType="number"
         android:layout_weight="1"
         android:gravity="center"
         android:textColor="@color/c_333333"
