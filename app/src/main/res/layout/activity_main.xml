@@ -21,7 +21,7 @@
 
     <com.example.customview.addsubtractView.AddSubtractView
         android:id="@+id/numView"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="200dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

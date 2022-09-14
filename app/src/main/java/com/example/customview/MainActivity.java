@@ -1,11 +1,7 @@
 package com.example.customview;
 
-import android.animation.ObjectAnimator;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         AddSubtractView view=findViewById(R.id.numView);
         view.setMinNum(-10);
-        view.setMaxNum(999);
+        view.setMaxNum(1);
         view.setNumListener(new NumListener() {
             @Override
             public void setNumListener(int num) {
@@ -48,26 +44,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        View rootView= getWindow().getDecorView().findViewById(android.R.id.content);
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { //视图树发生变化时调用
-            Rect rect=new Rect();
-            int oldHeight=0;
-            @Override
-            public void onGlobalLayout() {
-                rootView.getWindowVisibleDisplayFrame(rect);
-                int newHeight=rect.height();
-                if(newHeight<oldHeight){ //弹出软键盘
-                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "translationY",  -500);
-                    objectAnimator.setDuration(1000);
-                    objectAnimator.start();
-                }else if(newHeight!=oldHeight){
-                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "translationY", 0);
-                    objectAnimator.setDuration(1000);
-                    objectAnimator.start();
-                }
-                oldHeight=newHeight;
-            }
-        });
+//        View rootView= getWindow().getDecorView().findViewById(android.R.id.content);
+//        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { //视图树发生变化时调用
+//            Rect rect=new Rect();
+//            int oldHeight=0;
+//            @Override
+//            public void onGlobalLayout() {
+//                rootView.getWindowVisibleDisplayFrame(rect);
+//                int newHeight=rect.height();
+//                if(newHeight<oldHeight){ //弹出软键盘
+//                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "translationY",  -500);
+//                    objectAnimator.setDuration(1000);
+//                    objectAnimator.start();
+//                }else if(newHeight!=oldHeight){
+//                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "translationY", 0);
+//                    objectAnimator.setDuration(1000);
+//                    objectAnimator.start();
+//                }
+//                oldHeight=newHeight;
+//            }
+//        });
 
 
 

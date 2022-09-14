@@ -63,6 +63,8 @@ public class AddSubtractView extends LinearLayout {
         mEtNum.setTextSize(contentSize);
 
         listener();
+
+        setNum(num);
     }
 
 
@@ -78,7 +80,7 @@ public class AddSubtractView extends LinearLayout {
                     if(mEtNum.getText().toString().isEmpty())  setNum(minNum);
                     mEtNum.clearFocus();
 
-                    if(numListener!=null) numListener.setNumListener(minNum);
+                    if(numListener!=null) numListener.setNumListener(NumUtil.parseInt(mEtNum.getText().toString()));
                 }
                 oldHeight=newHeight;
             }
@@ -100,7 +102,7 @@ public class AddSubtractView extends LinearLayout {
                 String content=s.toString();
                 if(content.isEmpty() || content.equals("-") || content.equals("+")) return;
 
-                int num=NumUtil.parseInt(content);
+                num=NumUtil.parseInt(content);
                 if(num<=minNum){
                     if(num<minNum) {
                         setNum(minNum);
@@ -190,10 +192,20 @@ public class AddSubtractView extends LinearLayout {
         }else{
             mEtNum.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
         }
+        if(minNum>=num){
+            setNum(minNum);
+        }else{
+            setClickable(mTvSubtract,true);
+        }
     }
 
     public void setMaxNum(int maxNum){
         this.maxNum=maxNum;
+        if(maxNum<=num){
+            setNum(maxNum);
+        }else {
+            setClickable(mTvAdd,true);
+        }
     }
 
     public void setNum(int num){
